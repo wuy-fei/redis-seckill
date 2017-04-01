@@ -25,6 +25,8 @@ public class SecKillRunnableRpush implements Runnable {
 					 System.out.println("修改库存");
 					 // 插入 redis 用户 抢占成功 标识     key为 [商品 id  用户id 组合 ] 
 					 jedis.set("goodId:userId"+num, "ok");
+					 // 思考 :  记录 成功的 userId 到     redis 的 一个 set集合中  作为记录 
+					 jedis.sadd("goodstore_sucessUser", userId);
 				 }
 				 else{
 					 System.out.println("抢占失败!!!!!!!!!");
@@ -34,6 +36,9 @@ public class SecKillRunnableRpush implements Runnable {
 			}
 			
 
+			
+			
+			
 			// jedis.watch("stock");
 			// int stock = Integer.valueOf(jedis.get("stock"));
 			//
@@ -61,6 +66,9 @@ public class SecKillRunnableRpush implements Runnable {
 			// System.out.println("用户: " + userId + " 抢购失败，没库存了!");
 			// jedis.sadd("failureUsers", userId);
 			// }
+			
+			
+			
 		} finally {
 			jedis.close();
 		}
